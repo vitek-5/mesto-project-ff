@@ -5,7 +5,7 @@ const cardTemplate = document.querySelector('#card-template').content;
 const placesList = document.querySelector('.places__list');
 
 // @todo: Функция создания карточки
-const createCard = (initialCard, deleteCard) => {
+const createCard = (initialCard, deleteCard, LikeToggle) => {
     /* клонируем для одной карточки */
     const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
 
@@ -14,7 +14,7 @@ const createCard = (initialCard, deleteCard) => {
     const cardImage = cardElement.querySelector('.card__image');
     const cardTitle = cardDescription.querySelector('.card__title');
     const cardDeleteButton = cardElement.querySelector('.card__delete-button');
-    const cardLikeButton = cardElement.querySelector('.card_like-button');
+    const cardLikeButton = cardElement.querySelector('.card__like-button');
 
     /* выводим данные с массива данных */
     cardImage.src = initialCard.link;
@@ -23,15 +23,20 @@ const createCard = (initialCard, deleteCard) => {
 
     /* обработчик события по клику */
     cardDeleteButton.addEventListener('click', deleteCard);
+    cardLikeButton.addEventListener('click', LikeToggle);
 
     return cardElement;
 };
 
+const LikeToggle = evt => {
+    evt.target.classList.toggle('card__like-button_is-active');
+};
+
+
 // @todo: Функция удаления карточки
-const deleteCard = event => {
-    const eventTarget = event.target;
+const deleteCard = evt => {
     /* обращаемся к родителю текущей кнопки */
-    eventTarget.closest('.card').remove();
+    evt.target.closest('.card').remove();
 }
 
 /* выводим карточку в DOM узел */
@@ -39,8 +44,4 @@ const renderCard = (cardElement) => {
     placesList.append(cardElement);
 }
 
-
-// @todo: Вывести карточки на страницу
-initialCards.forEach((initialCard) => {
-    renderCard(createCard(initialCard, deleteCard));
-})
+export {renderCard, createCard, deleteCard, LikeToggle}
