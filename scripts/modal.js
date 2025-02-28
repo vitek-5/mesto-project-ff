@@ -22,6 +22,7 @@ const closeModal = (popup) => {
     popup.classList.remove('popup_is-opened');
     document.removeEventListener('click', closeByOverlayClick);
     document.removeEventListener('keydown', closeByEsc);
+    
 };
 
 export { showModal, closeModal };
