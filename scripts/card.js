@@ -58,11 +58,11 @@ const createCard = ({ initialCard, toggleLike, imagePopupHandler, deleteCardPopu
                         };
                     })
                 })
+                .then(() => {
+                    toggleLike(evt);
+                })
                 .catch(err => {
                     console.log(err);
-                })
-                .finally(() => {
-                    toggleLike(evt);
                 })
         } else {
             putLikeData(cardId)
@@ -73,11 +73,11 @@ const createCard = ({ initialCard, toggleLike, imagePopupHandler, deleteCardPopu
                         };
                     })
                 })
+                .then(() => {
+                    toggleLike(evt);
+                })
                 .catch(err => {
                     console.log(err);
-                })
-                .finally(() => {
-                    toggleLike(evt);
                 })
         }
     });
