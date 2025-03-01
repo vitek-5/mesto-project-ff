@@ -139,13 +139,11 @@ profileImage.addEventListener('click', changeImageHandler);
 
 /*          Лоадеры кнопок      */
 const savingData = (evt, savingText) => {
-    const submitButton = evt.target.querySelector('.popup__button');
-    submitButton.textContent = savingText;
+    evt.submitter.textContent = savingText;
 };
 
 const savedData = (evt, savedText) => {
-    const submitButton = evt.target.querySelector('.popup__button');
-    submitButton.textContent = savedText;
+    evt.submitter.textContent = savedText;
 };
 /* ----------------------------------- */
 
@@ -160,6 +158,8 @@ const submitEditProfileForm = evt => {
         })
         .then(() => {
             closeModal(getOpenedPopup());
+        })
+        .finally(() => {
             savedData(evt, savedText);
         })
 }
@@ -175,6 +175,8 @@ const submitDeleteCardForm = (evt, cardId, cardElement) => {
         })
         .then(() => {
             closeModal(getOpenedPopup());
+        })
+        .finally(() => {
             savedData(evt, removedText);
         })
 };
@@ -194,6 +196,11 @@ const submitAddCardForm = evt => {
         })
         .then(() => {
             closeModal(getOpenedPopup());
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        .finally(() => {
             savedData(evt, savedText);
         })
 };
@@ -207,6 +214,11 @@ const submitChangeAvatarForm = evt => {
         })
         .then(() => {
             closeModal(getOpenedPopup());
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        .finally(() => {
             savedData(evt, savedText);
         })
 };
@@ -257,5 +269,8 @@ const getData = () => {
             renderUserData(userData);
             renderCardData(initialCards, userId);
         })
+        .catch(err => {
+            console.log(err)
+        }) 
 };
 getData();

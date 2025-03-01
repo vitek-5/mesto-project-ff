@@ -1,3 +1,5 @@
+import { checkResponse } from "./utils/response"
+
 const config = {
     baseUrl: 'https://nomoreparties.co/v1/wff-cohort-33',
     headers: {
@@ -6,24 +8,19 @@ const config = {
     }
 }
 
+
+const request = (endpoint, options) => {
+    return fetch(config.baseUrl + endpoint, options)
+        .then(checkResponse)
+};
+
 /*          Данные юзера            */
 const getUserData = () => {
-    return fetch(`${config.baseUrl}/users/me`, {
-        headers: config.headers
-    })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-}
+    return request('/users/me', { headers: config.headers })
+};
 
 const updateUserData = (profileName, profileDescription) => {
-    return fetch(`${config.baseUrl}/users/me`, {
+    return request('/users/me', {
         method: 'PATCH',
         headers: config.headers,
         body: JSON.stringify({
@@ -31,35 +28,15 @@ const updateUserData = (profileName, profileDescription) => {
             about: profileDescription
         })
     })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-}
+};
 
 /*          Карточки сайта            */
 const getInitialCards = () => {
-    return fetch(`${config.baseUrl}/cards`, {
-        headers: config.headers
-    })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+    return request('/cards', { headers: config.headers })
 };
 
-const addNewCardData = (newCard) => {
-    return fetch(`${config.baseUrl}/cards`, {
+const addNewCardData = newCard => {
+    return request('/cards', {
         method: 'POST',
         headers: config.headers,
         body: JSON.stringify({
@@ -67,82 +44,39 @@ const addNewCardData = (newCard) => {
             link: newCard.link
         })
     })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-}
+};
 
-const putLikeData = (cardId) => {
-    return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+const putLikeData = cardId => {
+    return request('/cards/likes/' + cardId, {
         method: 'PUT',
         headers: config.headers,
     })
-    .then(res => {
-        if (res.ok) {
-            return getInitialCards();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-}
+        .then(getInitialCards)
+};
 
-const removeLikeData = (cardId) => {
-    return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+const removeLikeData = cardId => {
+    return request(`/cards/likes/${cardId}`, {
         method: 'DELETE',
         headers: config.headers
     })
-    .then(res => {
-        if (res.ok) {
-            return getInitialCards()
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-}
+        .then(getInitialCards)
+};
 
-const deleteCardData = (cardId) => {
-    return fetch(`${config.baseUrl}/cards/${cardId}`, {
+const deleteCardData = cardId => {
+    return request(`/cards/${cardId}`, {
         method: 'DELETE',
         headers: config.headers
     })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-}
+};
 
-const changeAvatarData = (inputChangeAvatar) => {
-    return fetch(`${config.baseUrl}/users/me/avatar`, {
+const changeAvatarData = inputChangeAvatar => {
+    return request('/users/me/avatar', {
         method: 'PATCH',
         headers: config.headers,
         body: JSON.stringify({
-            avatar: inputChangeAvatar 
+            avatar: inputChangeAvatar
         })
     })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-}
+};
 
 export { getUserData, updateUserData, getInitialCards, addNewCardData, putLikeData, removeLikeData, deleteCardData, changeAvatarData };

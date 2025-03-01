@@ -58,6 +58,12 @@ const createCard = ({ initialCard, toggleLike, imagePopupHandler, deleteCardPopu
                         };
                     })
                 })
+                .catch(err => {
+                    console.log(err);
+                })
+                .finally(() => {
+                    toggleLike(evt);
+                })
         } else {
             putLikeData(cardId)
                 .then(data => {
@@ -66,9 +72,14 @@ const createCard = ({ initialCard, toggleLike, imagePopupHandler, deleteCardPopu
                             cardLikeCounter.textContent = initialCard.likes.length;
                         };
                     })
-                });
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+                .finally(() => {
+                    toggleLike(evt);
+                })
         }
-        toggleLike(evt);
     });
     cardImage.addEventListener('click', imagePopupHandler);
 
